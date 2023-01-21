@@ -8,7 +8,7 @@ from models.state import State
 # print("State objects: {}".format(storage.count(State)))
 
 # ja3be = State()
-# ja3be.name = "ja3be1"
+# ja3be.name = "ja3be2"
 # storage.new(ja3be)
 # storage.save()
 
