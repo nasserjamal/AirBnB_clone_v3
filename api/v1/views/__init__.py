@@ -1,0 +1,9 @@
+#!/usr/bin/python3
+"""I dont know what the **** this is"""
+
+
+from flask import Blueprint, jsonify
+
+app_views = Blueprint("app_views", __name__)
+
+from api.v1.views.index import *
