@@ -27,6 +27,6 @@ def index():
     return jsonify({"status": "OK"})
 
 
-@app_views.route("/stats")
+@app_views.route("/stats", methods=["GET"])
 def stats():
     return jsonify(stats_data)
