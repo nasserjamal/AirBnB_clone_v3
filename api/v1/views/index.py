@@ -23,7 +23,7 @@ stats_data =\
 
 
 @app_views.route("/status", methods=["GET"])
-def index():
+def status():
     """Returns the status of our api"""
     return jsonify({"status": "OK"})
 
