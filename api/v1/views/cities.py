@@ -37,6 +37,7 @@ def delete_city(city_id=None):
     if cty is None:
         abort(404)
     cty.delete()
+    storage.save()
     return jsonify({})
 
 
@@ -53,9 +54,7 @@ def post_city(state_id):
         return make_response("Not a JSON", 400)
     if request_data.get("name") is None:
         return make_response("Missing name", 400)
-    new_city = City()
-    for key, val in request_data.items():
-        setattr(new_city, key, val)
+    new_city = City(**request_data)
     new_city.state_id = state_id
     new_city.save()
     storage.save()
@@ -74,6 +73,8 @@ def update_city(city_id):
     except Exception:
         return make_response("Not a JSON", 400)
     for key, val in request_data.items():
-        setattr(cty, key, val)
+        if key != "id" or key != "created_at" or key != "updated_at" or\
+         key != "state_id":
+            setattr(cty, key, val)
     cty.save()
     return jsonify(cty.to_dict()), 200

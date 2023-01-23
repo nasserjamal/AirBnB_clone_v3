@@ -18,6 +18,7 @@ def get_all_amenities():
 @app_views.route("/amenities/<amenity_id>", methods=['GET'],
                  strict_slashes=False)
 def get_amenity(amenity_id):
+    """Fetches amenities with the specified id"""
     amenity = storage.get(Amenity, amenity_id)
     if amenity is None:
         abort(404)
@@ -27,6 +28,7 @@ def get_amenity(amenity_id):
 @app_views.route("/amenities/<amenity_id>", methods=['DELETE'],
                  strict_slashes=False)
 def delete_amenity(amenity_id):
+    """Delete the specified amenity object"""
     amenity = storage.get(Amenity, amenity_id)
     if amenity is None:
         abort(404)
@@ -37,6 +39,7 @@ def delete_amenity(amenity_id):
 
 @app_views.route("/amenities", methods=['POST'], strict_slashes=False)
 def create_amenity():
+    """Creates a new amenity"""
     try:
         request_data = request.get_json()
     except Exception:
@@ -51,6 +54,7 @@ def create_amenity():
 @app_views.route("/amenities/<amenity_id>", methods=['PUT'],
                  strict_slashes=False)
 def update_amenity(amenity_id):
+    """Update an amenity"""
     amenity = storage.get(Amenity, amenity_id)
     if amenity is None:
         abort(404)
@@ -63,4 +67,3 @@ def update_amenity(amenity_id):
             setattr(amenity, key, val)
     amenity.save()
     return jsonify(amenity.to_dict())
-    
