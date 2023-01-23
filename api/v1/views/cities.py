@@ -52,10 +52,10 @@ def post_city(state_id):
         return make_response("Not a JSON", 400)
     if request_data.get("name") is None:
         return make_response("Missing name", 400)
-    # new_city = City(**request_data, state_id=state_id)
-    # # storage.new(new_city)
-    # # storage.save()
-    # # storage.reload()
+    new_city = City(state_id=state_id)
+    storage.new(new_city)
+    storage.save()
+    storage.reload()
     return "jsonify(new_city.to_dict())", 201
 
 
