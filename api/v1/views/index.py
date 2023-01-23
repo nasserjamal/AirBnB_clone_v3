@@ -22,13 +22,13 @@ stats_data =\
     }
 
 
-@app_views.route("/status", methods=["GET"])
+@app_views.route("/status/", methods=["GET"])
 def status():
     """Returns the status of our api"""
     return jsonify({"status": "OK"})
 
 
-@app_views.route("/stats", methods=["GET"], strict_slashes=False)
+@app_views.route("/stats/", methods=["GET"], strict_slashes=False)
 def stats():
     """Returns the number of each of the classes in the database"""
     return jsonify(stats_data)
