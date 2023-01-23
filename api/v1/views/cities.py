@@ -73,9 +73,3 @@ def update_city(city_id):
         setattr(cty, key, val)
     cty.save()
     return jsonify(cty.to_dict()), 200
-
-# d7ab9969-21de-4491-a2c6-c24939cc8569
-# 51a0de2c-cef3-4c85-9cba-3e9882e8931b
-# curl -X PUT http://0.0.0.0:5000/api/v1/cities/
-# b9a2c764-f792-452d-9313-ab5364bbd1f2
-# -H "Content-Type: application/json" -d '{"name": "Bossier City"}'
