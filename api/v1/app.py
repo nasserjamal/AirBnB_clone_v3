@@ -26,4 +26,5 @@ def on_app_close(ja3):
 if __name__ == "__main__":
     host = getenv("HBNB_API_HOST", "0.0.0.0")
     port = getenv("HBNB_API_PORT", "5000")
+    app.config['JSONIFY_PRETTYPRINT_REGULAR'] = True
     app.run(host=host, port=port, threaded=True)
