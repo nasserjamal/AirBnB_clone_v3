@@ -53,8 +53,9 @@ def post_city(state_id):
     if request_data.get("name") is None:
         return make_response("Missing name", 400)
     new_city = City()
-    for key, val in request_data:
-        setattr(new_city, key,val)
+    for key, val in request_data.items():
+        setattr(new_city, key, val)
+    new_city.state_id = state_id
     new_city.save()
     storage.save()
     return jsonify(new_city.to_dict()), 201
