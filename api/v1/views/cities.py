@@ -52,11 +52,12 @@ def post_city(state_id):
         return make_response("Not a JSON", 400)
     if request_data.get("name") is None:
         return make_response("Missing name", 400)
-    new_city = City(state_id=state_id)
-    storage.new(new_city)
+    new_city = City()
+    for key, val in request_data:
+        setattr(new_city, key,val)
+    new_city.save()
     storage.save()
-    storage.reload()
-    return "jsonify(new_city.to_dict())", 201
+    return jsonify(new_city.to_dict()), 201
 
 
 @app_views.route("cities/<city_id>", methods=['PUT'])
