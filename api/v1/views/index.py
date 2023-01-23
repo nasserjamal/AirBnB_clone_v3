@@ -22,10 +22,10 @@ stats_data =\
     }
 
 
-# @app_views.route("/status")
-# def index():
-#     """Returns the status of our api"""
-#     return jsonify({"status": "OK"})
+@app_views.route("/status", methods=["GET"])
+def index():
+    """Returns the status of our api"""
+    return jsonify({"status": "OK"})
 
 
 @app_views.route("/stats", methods=["GET"])
