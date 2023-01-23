@@ -28,7 +28,7 @@ def index():
     return jsonify({"status": "OK"})
 
 
-@app_views.route("/stats", methods=["GET"])
-def stats():
-    """Returns the number of each of the classes in the database"""
-    return jsonify(stats_data)
+# @app_views.route("/stats", methods=["GET"])
+# def stats():
+#     """Returns the number of each of the classes in the database"""
+#     return jsonify(stats_data)
