@@ -61,7 +61,10 @@ def put_state(state_id):
     if state is None:
         abort(404)
     try:
-        request_data = request.get_json()
+        if request.headers.get("Content-Type", "") ==  "application/json":
+            request_data = request.get_json()
+        else:
+            raise
     except Exception:
         return make_response(jsonify({'error': 'Not a JSON'}), 400)
     for attr, val in request_data.items():
