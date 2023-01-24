@@ -75,7 +75,7 @@ class FileStorage:
            type(id) is str and cls.__name__ in classes:
             key = cls.__name__ + "." + id
             objct = self.__objects.get(key, None)
-            return str(objct),
+            return objct
         else:
             return None
 
