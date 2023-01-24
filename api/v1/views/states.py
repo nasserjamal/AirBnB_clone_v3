@@ -43,7 +43,10 @@ def delete_state(state_id):
 def create_state():
     """Creates a state object"""
     try:
-        json_data = request.get_json()
+        if request.headers.get("Content-Type", "") == "application/json":
+            json_data = request.get_json()
+        else:
+            raise
     except Exception:
         return make_response(jsonify(error="Not a JSON"), 400)
     if 'name' not in json_data:
@@ -61,7 +64,7 @@ def put_state(state_id):
     if state is None:
         abort(404)
     try:
-        if request.headers.get("Content-Type", "") ==  "application/json":
+        if request.headers.get("Content-Type", "") == "application/json":
             request_data = request.get_json()
         else:
             raise
