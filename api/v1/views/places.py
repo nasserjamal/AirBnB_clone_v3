@@ -42,13 +42,17 @@ def delete_place(place_id):
 @app_views.route('/places', methods=['POST'], strict_slashes=False)
 def create_place():
     """Creates a place object"""
-    json_data = request.get_json()
-    if json_data is None:
-        abort(jsonify(error="Not a JSON", status=400))
-    if 'email' not in json_data:
-        abort(jsonify(error="Missing email", status=400))
-    if 'password' not in json_data:
-        abort(jsonify(error="Missing password", status=400))
+    try:
+        if request.headers.get("Content-Type", "") == "application/json":
+            json_data = request.get_json()
+        else:
+            raise
+    except Exception:
+        return make_response("Not a JSON", 400)
+    if 'user_id' not in json_data:
+        return make_response(jsonify(error="Missing user_id"), 400)
+    if 'name' not in json_data:
+        return make_response(jsonify(error="Missing name"), 400)
     place = Place(**request.get_json())
     place.save()
     return make_response(jsonify(place.to_dict()), 201)
@@ -61,10 +65,15 @@ def put_place(place_id):
     place = storage.get(Place, place_id)
     if place is None:
         abort(404)
-    if not request.get_json():
-        return make_response(jsonify({'error': 'Not a JSON'}), 400)
+    try:
+        if request.headers.get("Content-Type", "") == "application/json":
+            json_data = request.get_json()
+        else:
+            raise
+    except Exception:
+        return make_response("Not a JSON", 400)
     for attr, val in request.get_json().items():
-        if attr not in ['id', 'email', 'created_at', 'updated_at']:
+        if attr not in ['id', 'user_id', 'city_id', 'created_at', 'updated_at']:
             setattr(place, attr, val)
     place.save()
     return jsonify(place.to_dict())
