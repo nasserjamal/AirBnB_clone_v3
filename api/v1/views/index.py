@@ -26,9 +26,3 @@ stats_data =\
 def status():
     """Returns the status of our api"""
     return jsonify({"status": "OK"})
-
-
-@app_views.route('/stats/', use_strict_slashes=False)
-def stats():
-    """Prints out the stats"""
-    return jsonify(stats_data)
