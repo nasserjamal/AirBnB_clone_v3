@@ -69,7 +69,10 @@ def update_review(review_id):
     if rvw is None:
         abort(404)
     try:
-        request_data = request.get_json()
+        if request.headers.get("Content-Type", "") == "application/json":
+            request_data = request.get_json()
+        else:
+            raise
     except Exception:
         return make_response("Not a JSON", 400)
     for key, val in request_data.items():

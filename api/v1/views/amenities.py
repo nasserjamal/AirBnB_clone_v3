@@ -41,7 +41,10 @@ def delete_amenity(amenity_id):
 def create_amenity():
     """Creates a new amenity"""
     try:
-        request_data = request.get_json()
+        if request.headers.get("Content-Type", "") == "application/json":
+            request_data = request.get_json()
+        else:
+            raise
     except Exception:
         return make_response("Not a JSON", 400)
     if request_data.get("name") is None:
@@ -59,7 +62,10 @@ def update_amenity(amenity_id):
     if amenity is None:
         abort(404)
     try:
-        request_data = request.get_json()
+        if request.headers.get("Content-Type", "") == "application/json":
+            request_data = request.get_json()
+        else:
+            raise
     except Exception:
         return make_response("Not a JSON", 400)
     for key, val in request_data.items():

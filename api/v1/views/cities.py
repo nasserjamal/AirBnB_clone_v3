@@ -12,12 +12,12 @@ from models.state import State
 @app_views.route("/states/<state_id>/cities", strict_slashes=False)
 def get_cities(state_id):
     """Fetches all cities in the states id"""
+    if storage.get(State, state_id) is None:
+        abort(404)
     all_cities = storage.all(City)
     cities_in_state = \
         [ct.to_dict() for ct in all_cities.values()
          if ct.to_dict().get("state_id") == state_id]
-    if len(cities_in_state) == 0:
-        abort(404)
     return jsonify(cities_in_state)
 
 
@@ -49,7 +49,10 @@ def post_city(state_id):
     if state is None:
         abort(404)
     try:
-        request_data = request.get_json()
+        if request.headers.get("Content-Type", "") == "application/json":
+            request_data = request.get_json()
+        else:
+            raise
     except Exception:
         return make_response("Not a JSON", 400)
     if request_data.get("name") is None:
@@ -69,7 +72,10 @@ def update_city(city_id):
     if cty is None:
         abort(404)
     try:
-        request_data = request.get_json()
+        if request.headers.get("Content-Type", "") == "application/json":
+            request_data = request.get_json()
+        else:
+            raise
     except Exception:
         return make_response("Not a JSON", 400)
     for key, val in request_data.items():
