@@ -12,7 +12,7 @@ from models.state import State
 def get_states():
     """Retrieves the list of all State objects"""
     states = []
-    for state in storage.all("State").values():
+    for state in storage.all(State).values():
         states.append(state.to_dict())
     return jsonify(states)
 
@@ -21,17 +21,17 @@ def get_states():
                  strict_slashes=False)
 def get_particular_state(state_id):
     """Retrieves a State object"""
-    state = storage.get("State", state_id)
+    state = storage.get(State, state_id)
     if state is None:
         abort(404)
-    return jsonify(to_dict(state))
+    return jsonify(state.to_dict())
 
 
 @app_views.route('/states/<string:state_id>', methods=['DELETE'],
                  strict_slashes=False)
 def delete_state(state_id):
     """Deletes a State object"""
-    state = storage.get("State", state_id)
+    state = storage.get(State, state_id)
     if state is None:
         abort(404)
     storage.delete(state)
@@ -42,12 +42,13 @@ def delete_state(state_id):
 @app_views.route('/states', methods=['POST'], strict_slashes=False)
 def create_state():
     """Creates a state object"""
-    json_data = request.get_json()
-    if json_data is None:
-        abort(jsonify(error="Not a JSON", status=400))
+    try:
+        json_data = request.get_json()
+    except Exception:
+        return make_response(jsonify(error="Not a JSON"), 400)
     if 'name' not in json_data:
-        abort(jsonify(error="Missing name", status=400))
-    state = State(**request.get_json())
+        return make_response(jsonify(error="Missing name"), 400)
+    state = State(**json_data)
     state.save()
     return make_response(jsonify(state.to_dict()), 201)
 
@@ -56,12 +57,14 @@ def create_state():
                  strict_slashes=False)
 def put_state(state_id):
     """update a state"""
-    state = storage.get("State", state_id)
+    state = storage.get(State, state_id)
     if state is None:
         abort(404)
-    if not request.get_json():
+    try:
+        request_data = request.get_json()
+    except Exception:
         return make_response(jsonify({'error': 'Not a JSON'}), 400)
-    for attr, val in request.get_json().items():
+    for attr, val in request_data.items():
         if attr not in ['id', 'created_at', 'updated_at']:
             setattr(state, attr, val)
     state.save()
